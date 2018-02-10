@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "5184913408",
+    "firebase_url": "https://protibadi-1518082763859.firebaseio.com",
+    "project_id": "protibadi-1518082763859",
+    "storage_bucket": "protibadi-1518082763859.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5184913408:android:d251523b9b7cae4b",
+        "android_client_info": {
+          "package_name": "com.nsu.protibadi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5184913408-q5j1ojj3p65f44m1hb4tb9i5v2atfpan.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsu.protibadi",
+            "certificate_hash": "c1d847863a5e569d9294029cbe711366797a5ca3"
+          }
+        },
+        {
+          "client_id": "5184913408-7bjcirvkmh4ec2mqs9p24j66cim10hc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnXnmri7u6l34ck894UKoXbI3XkFlHfYM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5184913408-7bjcirvkmh4ec2mqs9p24j66cim10hc6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
