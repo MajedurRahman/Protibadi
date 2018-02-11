@@ -98,7 +98,7 @@ public class CurrentPositionActivity extends FinderLocationAppCompatActivity imp
     @Override
     public void onLocationReceived(Location location) {
         setMapMarker(new LatLng(location.getLatitude(), location.getLongitude()));
-        Toast.makeText(this, location.toString(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, location.toString(), Toast.LENGTH_SHORT).show();
         Log.e("LocationService", location.getAltitude() + "  Time : " + location.getTime());
         Constant.USER_REF.child(fUser.getUid()).child("currentPosition").setValue(new LatLng(location.getLatitude(),location.getLongitude()));
 

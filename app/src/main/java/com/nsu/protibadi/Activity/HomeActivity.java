@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         initActions();
         initDBRef();
 
-        showDebugDBAddressLogToast(this);
+        //showDebugDBAddressLogToast(this);
     }
 
     private void initDBRef() {
