@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -46,8 +47,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
 
         sharedpreferences = getSharedPreferences(Constant.IS_TRACKING_RUNNING, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_home);
@@ -58,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initDBRef() {
+
+        Log.e("Firebase user ", fUser.getUid());
         footPrintREF = Constant.USER_REF.child(fUser.getUid()).child("FootPrint");
         currentPositionREF = Constant.USER_REF.child(fUser.getUid()).child("currentPosition");
         DUMMY_DATA();
@@ -69,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, CurrentPositionActivity.class));
-                startService(new Intent(HomeActivity.this, LocationService.class));
+                // startService(new Intent(HomeActivity.this, LocationService.class));
             }
         });
 
@@ -93,10 +94,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!TrackPointKey.isEmpty()) {
                     startActivity(new Intent(HomeActivity.this, FootPrintHistoryActivity.class).putExtra("FootPrintKey", TrackPointKey));
+                } else {
+                    Toast.makeText(HomeActivity.this, "No Foot Print Found !!", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Toast.makeText(HomeActivity.this,   "No Foot Print Found !!", Toast.LENGTH_SHORT).show();
-                }
+            }
+        });
+
+        findViewById(R.id.user_details).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, UserDetailsActivity.class));
             }
         });
     }
@@ -121,6 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                TrackPointKey.remove(dataSnapshot.getKey());
 
             }
 

@@ -1,7 +1,9 @@
 package com.nsu.protibadi.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +21,18 @@ public class UserDetailsActivity extends AppCompatActivity {
         CircularImageView circularImageView = findViewById(R.id.profile_picture);
 
         Picasso.with(this).load(user.getPhotoUrl()).into(circularImageView);
+        initActions();
+    }
 
+    void initActions() {
+
+        findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(UserDetailsActivity.this, AuthActivity.class));
+                finish();
+            }
+        });
     }
 }
