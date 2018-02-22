@@ -22,18 +22,16 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.nsu.protibadi.BuildConfig;
 
-import com.nsu.protibadi.Service.LocationService;
 import com.nsu.protibadi.R;
+import com.nsu.protibadi.Service.BluetoothService;
 import com.nsu.protibadi.Utils.Constant;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -47,13 +45,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        startService(new Intent(this, BluetoothService.class));
         sharedpreferences = getSharedPreferences(Constant.IS_TRACKING_RUNNING, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_home);
         initActions();
         initDBRef();
 
-        //showDebugDBAddressLogToast(this);
     }
 
     private void initDBRef() {
@@ -70,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, CurrentPositionActivity.class));
-                // startService(new Intent(HomeActivity.this, LocationService.class));
             }
         });
 
@@ -100,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.user_details).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.account_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, UserDetailsActivity.class));
@@ -142,34 +138,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
-        // startActivity(new Intent(HomeActivity.this,FootPrintHistoryActivity.class));
-      /*  currentPositionREF.setValue(new LatLng(23.4554,90.545454));
-        List<CustomLatLng> TrackPoint = new ArrayList<>();
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-        TrackPoint.add(new CustomLatLng(System.currentTimeMillis() , 23.566556,89.46566));
-
-        footPrintREF.child(String.valueOf(System.currentTimeMillis())).setValue(TrackPoint).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(HomeActivity.this, "Data upload Complete !!", Toast.LENGTH_SHORT).show();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(HomeActivity.this, " Failed to Save Data!" + " " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     void showAlertDialog() {
@@ -244,4 +212,5 @@ public class HomeActivity extends AppCompatActivity {
                 .check();
 
     }
+
 }

@@ -37,15 +37,11 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     debugCompile 'com.amitshekhar.android:debug-db:1.0.2'
     compile 'gun0912.ted:tedpermission:2.0.3'
+    compile 'io.palaima:smoothbluetooth:0.1.0'
 
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
 }
-
-
-
-
-
-
 
 
 

@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nsu.protibadi">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
+        android:name=".Utils.ProtibadiAplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,11 +32,12 @@
         </activity>
         <activity android:name=".Activity.UserDetailsActivity" />
 
-        <service android:name=".Service.LocationService" />
+        <service android:name=".Service.BluetoothService" />
 
         <activity android:name=".Activity.TrackingActivity" />
         <activity android:name=".Activity.FootPrintHistoryActivity" />
-        <activity android:name=".Activity.FootPrintMapActivity"></activity>
+        <activity android:name=".Activity.FootPrintMapActivity" />
+        <activity android:name=".Activity.AddNewEmergencyNumberActivity"></activity>
     </application>
 
 </manifest>

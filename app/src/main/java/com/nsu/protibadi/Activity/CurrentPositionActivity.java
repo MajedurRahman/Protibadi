@@ -21,13 +21,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 import mmr.finder.com.FinderLocationAppCompatActivity;
 import mmr.finder.com.FinderLocationRequest;
@@ -38,7 +35,7 @@ public class CurrentPositionActivity extends FinderLocationAppCompatActivity imp
     private GoogleMap mMap;
     boolean isCrrentMarkerAvailable = false;
     FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-    private DatabaseReference currentPositionREF;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +96,7 @@ public class CurrentPositionActivity extends FinderLocationAppCompatActivity imp
     public void onLocationReceived(Location location) {
         setMapMarker(new LatLng(location.getLatitude(), location.getLongitude()));
        // Toast.makeText(this, location.toString(), Toast.LENGTH_SHORT).show();
-        Log.e("LocationService", location.getAltitude() + "  Time : " + location.getTime());
+        Log.e("BluetoothService", location.getAltitude() + "  Time : " + location.getTime());
         Constant.USER_REF.child(fUser.getUid()).child("currentPosition").setValue(new LatLng(location.getLatitude(),location.getLongitude()));
 
     }

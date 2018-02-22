@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.nsu.protibadi.DatabaseHelper.ProtibadiDB;
 
 /**
@@ -19,6 +20,7 @@ public class ProtibadiAplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database = Room.databaseBuilder(getApplicationContext(), ProtibadiDB.class, DATABASE_NAME).build();
     }
 
