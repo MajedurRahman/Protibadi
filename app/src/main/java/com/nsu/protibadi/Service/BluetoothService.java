@@ -1,18 +1,12 @@
 package com.nsu.protibadi.Service;
 
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.media.AsyncPlayer;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,22 +19,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ValueEventListener;
-import com.nsu.protibadi.Activity.HomeActivity;
-import com.nsu.protibadi.Activity.TrackingActivity;
-import com.nsu.protibadi.Activity.UserDetailsActivity;
 import com.nsu.protibadi.Model.CustomLatLng;
-import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import io.palaima.smoothbluetooth.Device;
 import io.palaima.smoothbluetooth.SmoothBluetooth;
 
+import static android.content.ContentValues.TAG;
+import static com.nsu.protibadi.Utils.Constant.EMERGENCY_STATUS;
 import static com.nsu.protibadi.Utils.Constant.getSharedPref;
 import static com.nsu.protibadi.Utils.Constant.getTimer;
 import static com.nsu.protibadi.Utils.Constant.mSmoothBluetooth;
@@ -51,95 +40,13 @@ import static com.nsu.protibadi.Utils.Constant.mSmoothBluetooth;
 
 public class BluetoothService extends Service {
 
-    FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
     public static FusedLocationProviderClient fusedLocationProviderClient;
-    Location location;
-    static Context context;
-    MediaPlayer mediaPlayer;
     public static boolean alreadyEmergency;
+    static Context context;
+    FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+    Location location;
+    MediaPlayer mediaPlayer;
     private String userId;
-
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        context = getApplicationContext();
-        initComponent();
-        return START_STICKY;
-    }
-
-    void initComponent() {
-        userId = fUser.getUid();
-        getLastLocation();
-
-        alreadyEmergency = false;
-        if (mSmoothBluetooth == null) {
-            mSmoothBluetooth = new SmoothBluetooth(context);
-        }
-        mSmoothBluetooth.setListener(mListener);
-
-        if (!mSmoothBluetooth.isConnected()) {
-            mSmoothBluetooth.doDiscovery();
-            mSmoothBluetooth.tryConnection();
-        }
-    }
-
-    protected void getLastLocation() {
-
-        if (fusedLocationProviderClient == null)
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-
-                if (getSharedPref(context).getInt(Constant.IS_TRACKING_RUNNING, 0) == Constant.TRACKING_RUNNING) {
-                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-
-                            location = task.getResult();
-                            if (location != null) {
-                                Log.e("Last Location", location.getLatitude() + " " + location.getLongitude());
-                                Constant.USER_REF.child(userId).child(Constant.FOOT_PRINT_TAG)
-                                        .child(getSharedPref(context).getLong(Constant.CURRENT_TRACKING_NUMBER, 00000000000000) + "")
-                                        .push().setValue(new CustomLatLng(System.currentTimeMillis(), location.getLatitude(), location.getLongitude())).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Log.e("Cloud Confirmation ", "Successfully posted in Cloud ");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("Cloud Confirmation ", "Failed to Store posted in Cloud " + e.getMessage());
-
-                                    }
-                                });
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("Last Location", "Last Location Failed " + e.getMessage());
-
-                        }
-                    });
-
-
-                }
-            }
-        };
-        getTimer().scheduleAtFixedRate(timerTask, 5000, 5000);
-
-
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
     private SmoothBluetooth.Listener mListener = new SmoothBluetooth.Listener() {
         @Override
         public void onBluetoothNotSupported() {
@@ -222,7 +129,17 @@ public class BluetoothService extends Service {
                     editor.commit();
 
                     Log.e("Tracking :", "New Tracking Started " + getSharedPref(context).getLong(Constant.CURRENT_TRACKING_NUMBER, 00000000000000));
-
+                    Constant.USER_REF.child(userId).child(EMERGENCY_STATUS).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.e(TAG, "onComplete: " + "Emergency Status Turn on successful");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: " + "Emergency Status Turn on unsuccessful");
+                        }
+                    });
                 }
 
 
@@ -231,10 +148,87 @@ public class BluetoothService extends Service {
         }
     };
 
-
     public static int isTrackingRunning() {
         int trackingFLAG = getSharedPref(context).getInt(Constant.IS_TRACKING_RUNNING, 0);
         return trackingFLAG;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        context = getApplicationContext();
+        initComponent();
+        return START_STICKY;
+    }
+
+    void initComponent() {
+        userId = fUser.getUid();
+        getLastLocation();
+
+        alreadyEmergency = false;
+        if (mSmoothBluetooth == null) {
+            mSmoothBluetooth = new SmoothBluetooth(context);
+        }
+        mSmoothBluetooth.setListener(mListener);
+
+        if (!mSmoothBluetooth.isConnected()) {
+            mSmoothBluetooth.doDiscovery();
+            mSmoothBluetooth.tryConnection();
+        }
+    }
+
+    protected void getLastLocation() {
+
+        if (fusedLocationProviderClient == null)
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+
+                if (getSharedPref(context).getInt(Constant.IS_TRACKING_RUNNING, 0) == Constant.TRACKING_RUNNING) {
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+
+                            location = task.getResult();
+                            if (location != null) {
+                                Log.e("Last Location", location.getLatitude() + " " + location.getLongitude());
+                                Constant.USER_REF.child(userId).child(Constant.FOOT_PRINT_TAG)
+                                        .child(getSharedPref(context).getLong(Constant.CURRENT_TRACKING_NUMBER, 00000000000000) + "")
+                                        .push().setValue(new CustomLatLng(System.currentTimeMillis(), location.getLatitude(), location.getLongitude())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.e("Cloud Confirmation ", "Successfully posted in Cloud ");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Cloud Confirmation ", "Failed to Store posted in Cloud " + e.getMessage());
+
+                                    }
+                                });
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("Last Location", "Last Location Failed " + e.getMessage());
+
+                        }
+                    });
+
+
+                }
+            }
+        };
+        getTimer().scheduleAtFixedRate(timerTask, 5000, 5000);
+
+
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override

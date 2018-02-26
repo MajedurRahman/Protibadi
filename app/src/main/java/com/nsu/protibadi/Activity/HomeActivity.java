@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
 import android.os.Build;
-
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -25,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.nsu.protibadi.BuildConfig;
-
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Service.BluetoothService;
 import com.nsu.protibadi.Utils.Constant;
@@ -38,9 +35,22 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     // Write a message to the database
     FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+    ArrayList<String> TrackPointKey;
     private DatabaseReference currentPositionREF;
     private DatabaseReference footPrintREF;
-    ArrayList<String> TrackPointKey;
+
+    public static void showDebugDBAddressLogToast(Context context) {
+        if (BuildConfig.DEBUG) {
+            try {
+                Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
+                Method getAddressLog = debugDB.getMethod("getAddressLog");
+                Object value = getAddressLog.invoke(null);
+                Toast.makeText(context, (String) value, Toast.LENGTH_LONG).show();
+            } catch (Exception ignore) {
+
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,11 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         initActions();
         initDBRef();
+        initUserInformation();
 
+    }
+
+    private void initUserInformation() {
     }
 
     private void initDBRef() {
@@ -173,19 +187,6 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.setCancelable(false);
         alertDialog.show();
-    }
-
-    public static void showDebugDBAddressLogToast(Context context) {
-        if (BuildConfig.DEBUG) {
-            try {
-                Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
-                Method getAddressLog = debugDB.getMethod("getAddressLog");
-                Object value = getAddressLog.invoke(null);
-                Toast.makeText(context, (String) value, Toast.LENGTH_LONG).show();
-            } catch (Exception ignore) {
-
-            }
-        }
     }
 
     private void checkPermission() {

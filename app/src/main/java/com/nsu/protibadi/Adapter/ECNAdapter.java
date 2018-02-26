@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -98,7 +97,7 @@ public class ECNAdapter extends RecyclerView.Adapter<ECNAdapter.ECNHolder> {
                                     Constant.USER_REF.child(user.getUid()).child(EMERGENCY_CONACT_NUMBER).child(childKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-
+                                            notifyItemRemoved(position);
                                         }
                                     });
                                 }

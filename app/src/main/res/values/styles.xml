@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/front_color</item>
     </style>
 
+    <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">#ff1744</item>
+    </style>
+
 </resources>

@@ -3,6 +3,8 @@
     <string name="title_activity_maps">Protibadi</string>
     <string name="protibai_name">Protibadi</string>
     <string name="action_settings">Settings</string>
+    <string name="access_code">Access Code</string>
+    <string name="submit">Submit</string>
 
 
 </resources>
