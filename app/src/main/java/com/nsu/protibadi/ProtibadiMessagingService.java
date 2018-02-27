@@ -15,16 +15,8 @@ public class ProtibadiMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-
-        try {
-            String data = remoteMessage.getData().toString();
-            String title = remoteMessage.getNotification().getTitle();
-            String body = remoteMessage.getNotification().getBody();
-
-            Log.e("MessageService", "onMessageReceived: " + data + " " + title + " " + body);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Log.i("onMessageReceived", "onMessageReceived: ");
+        //TODO  Need to init Notification
     }
 
     @Override

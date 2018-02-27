@@ -15,19 +15,32 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.nsu.protibadi.Model.LinkedWith;
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
+import com.nsu.protibadi.WebService.Request.Data;
+import com.nsu.protibadi.WebService.Request.SimpleNotification;
+import com.nsu.protibadi.WebService.SendNotification;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.content.ContentValues.TAG;
 import static com.nsu.protibadi.Utils.Constant.EMERGENCY_STATUS;
+import static com.nsu.protibadi.Utils.Constant.FCM_TOKEN;
+import static com.nsu.protibadi.Utils.Constant.LINKED_WITH;
 import static com.nsu.protibadi.Utils.Constant.getSharedPref;
 
 public class UserDetailsActivity extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Button trackingButton;
     private Dialog dialog;
+    private List<String> tokenList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +49,46 @@ public class UserDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_details);
         initComponent();
         initActions();
+
+        demoPushNotification();
+    }
+
+    private void demoPushNotification() {
+        tokenList = new ArrayList<>();
+        Constant.USER_REF.child(user.getUid()).child(LINKED_WITH).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    LinkedWith linkedWith = data.getValue(LinkedWith.class);
+
+                    Log.e(TAG, "onDataChange: " + linkedWith.getId());
+                    Constant.USER_REF.child(linkedWith.getId()).child(FCM_TOKEN).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            tokenList.add(dataSnapshot.getValue().toString());
+
+                            SimpleNotification simpleNotification = new SimpleNotification();
+                            simpleNotification.setTo(dataSnapshot.getValue().toString());
+                            simpleNotification.setData(new Data());
+
+                            SendNotification sendNotification = new SendNotification();
+                            sendNotification.sendNotificationRequest(simpleNotification);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initComponent() {
