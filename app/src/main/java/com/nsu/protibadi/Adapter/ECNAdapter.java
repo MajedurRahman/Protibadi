@@ -88,19 +88,23 @@ public class ECNAdapter extends RecyclerView.Adapter<ECNAdapter.ECNHolder> {
                     Constant.USER_REF.child(user.getUid()).child(EMERGENCY_CONACT_NUMBER).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ecNumber : dataSnapshot.getChildren()) {
-                                ECNumber number = ecNumber.getValue(ECNumber.class);
-                                if (number.getPhoneNumber().equals(numberList.get(position).getPhoneNumber()) && number.getName().equals(numberList.get(position).getName())) {
+                            try {
+                                for (DataSnapshot ecNumber : dataSnapshot.getChildren()) {
+                                    ECNumber number = ecNumber.getValue(ECNumber.class);
+                                    if (number.getPhoneNumber().equals(numberList.get(position).getPhoneNumber()) && number.getName().equals(numberList.get(position).getName())) {
 
-                                    childKey = ecNumber.getKey();
-                                    Log.e("Child key ", childKey);
-                                    Constant.USER_REF.child(user.getUid()).child(EMERGENCY_CONACT_NUMBER).child(childKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            notifyItemRemoved(position);
-                                        }
-                                    });
+                                        childKey = ecNumber.getKey();
+                                        Log.e("Child key ", childKey);
+                                        Constant.USER_REF.child(user.getUid()).child(EMERGENCY_CONACT_NUMBER).child(childKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                notifyItemRemoved(position);
+                                            }
+                                        });
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
 

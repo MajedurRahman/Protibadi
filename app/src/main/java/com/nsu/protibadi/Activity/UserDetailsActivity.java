@@ -127,6 +127,12 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.manage_linked_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserDetailsActivity.this, ManageLinkedAccountActivity.class));
+            }
+        });
 
     }
 

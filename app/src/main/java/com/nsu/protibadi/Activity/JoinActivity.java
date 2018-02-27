@@ -15,8 +15,11 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.nsu.protibadi.Model.LinkModel;
+import com.nsu.protibadi.Model.LinkedWith;
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
+
+import static com.nsu.protibadi.Utils.Constant.JOINED_WITH;
 
 public class JoinActivity extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -58,14 +61,15 @@ public class JoinActivity extends AppCompatActivity {
                                     model.setJoinWithName(user.getDisplayName());
                                     model.setJoinerId(user.getUid());
                                     Constant.LINK_REF.child(uid).setValue(model);
-                                    //TODO Coome here to do some thing
                                     Toast.makeText(JoinActivity.this, "Successfully added with" + model.getJoinWithName(), Toast.LENGTH_SHORT).show();
+                                    LinkedWith linkedWith = new LinkedWith(model.getLinkWithName(), model.getLinkerId(), System.currentTimeMillis(), "Unknown");
+                                    Constant.USER_REF.child(user.getUid()).child(JOINED_WITH).push().setValue(linkedWith);
                                     finish();
                                     dialog.cancel();
-
                                 }
                             } catch (Exception ex) {
-                                Log.e("Error", "onChildAdded: " + ex.getMessage());
+                                Log.e("JoinActivity", "onChildAdded: " + ex.getMessage());
+                                ex.printStackTrace();
                             }
 
                         }

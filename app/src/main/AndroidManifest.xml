@@ -39,7 +39,8 @@
         <activity android:name=".Activity.FootPrintMapActivity" />
         <activity android:name=".Activity.AddNewEmergencyNumberActivity" />
         <activity android:name=".Activity.JoinActivity" />
-        <activity android:name=".Activity.LinkActivity"></activity>
+        <activity android:name=".Activity.LinkActivity" />
+        <activity android:name=".Activity.ManageLinkedAccountActivity"></activity>
     </application>
 
 </manifest>

@@ -18,8 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.nsu.protibadi.Model.LinkJoinModel;
 import com.nsu.protibadi.Model.LinkModel;
+import com.nsu.protibadi.Model.LinkedWith;
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
 
@@ -47,7 +47,7 @@ public class LinkActivity extends AppCompatActivity {
         waitingDialog.setCancelable(false);
         waitingDialog.show();
         token = String.valueOf(Math.abs(random.nextInt(959116155)));
-        final LinkModel linkModel = new LinkModel(user.getUid(), user.getDisplayName());
+        LinkModel linkModel = new LinkModel(user.getUid(), user.getDisplayName());
         Constant.LINK_REF.child(token.trim()).push().setValue(linkModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -63,19 +63,20 @@ public class LinkActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 try {
-
                     if (!isConfirm) {
                         final LinkModel linkModel1 = dataSnapshot.getValue(LinkModel.class);
                         if (linkModel1 != null) {
                             if (linkModel1.isConfermation()) {
 
-                                LinkJoinModel linkJoinModel = new LinkJoinModel();
+            /*                    LinkJoinModel linkJoinModel = new LinkJoinModel();
                                 linkJoinModel.setJoin_with(linkModel1.getJoinerId());
                                 linkJoinModel.setJoinerName(linkModel1.getJoinWithName());
                                 linkJoinModel.setLink_with(user.getUid());
                                 linkJoinModel.setLinkerName(user.getDisplayName());
-                                linkJoinModel.setTimeData(System.currentTimeMillis());
-                                Constant.USER_REF.child(user.getUid()).child(LINKED_WITH).push().setValue(linkJoinModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                linkJoinModel.setTimeData(System.currentTimeMillis());*/
+
+                                LinkedWith linkedWith = new LinkedWith(linkModel1.getJoinWithName() + "", linkModel1.getJoinerId() + "", System.currentTimeMillis(), "Unknown");
+                                Constant.USER_REF.child(user.getUid()).child(LINKED_WITH).push().setValue(linkedWith).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(LinkActivity.this, "Successfully Linked with " + linkModel1.getLinkWithName(), Toast.LENGTH_SHORT).show();

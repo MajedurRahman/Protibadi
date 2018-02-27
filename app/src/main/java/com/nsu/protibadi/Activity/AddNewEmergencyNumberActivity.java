@@ -1,9 +1,9 @@
 package com.nsu.protibadi.Activity;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,9 +32,9 @@ import static com.nsu.protibadi.Utils.Constant.EMERGENCY_CONACT_NUMBER;
 
 public class AddNewEmergencyNumberActivity extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private DatabaseReference emergencyContactRef;
     List<ECNumber> ecNumbersList;
     ECNAdapter adapter;
+    private DatabaseReference emergencyContactRef;
     private Dialog dialog;
 
     @Override
@@ -103,10 +103,14 @@ public class AddNewEmergencyNumberActivity extends AppCompatActivity {
         emergencyContactRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                try {
+                    ecNumbersList.add(dataSnapshot.getValue(ECNumber.class));
+                    Log.e("ECNumber Added ", dataSnapshot.getKey());
+                    adapter.notifyDataSetChanged();
+                } catch (Exception ex) {
 
-                ecNumbersList.add(dataSnapshot.getValue(ECNumber.class));
-                Log.e("ECNumber Added ", dataSnapshot.getKey());
-                adapter.notifyDataSetChanged();
+                }
+
             }
 
             @Override
@@ -116,17 +120,22 @@ public class AddNewEmergencyNumberActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                ECNumber ecNumber = dataSnapshot.getValue(ECNumber.class);
+                try {
+                    ECNumber ecNumber = dataSnapshot.getValue(ECNumber.class);
 
-                for (ECNumber number : ecNumbersList) {
-                    if (number.getName().equals(ecNumber.getName()) && number.getPhoneNumber().equals(ecNumber.getPhoneNumber())) {
-                        ecNumbersList.remove(number);
-                        Log.e("ECNumber Removed", ecNumber.getPhoneNumber().toString());
-                        return;
+                    for (ECNumber number : ecNumbersList) {
+                        if (number.getName().equals(ecNumber.getName()) && number.getPhoneNumber().equals(ecNumber.getPhoneNumber())) {
+                            ecNumbersList.remove(number);
+                            Log.e("ECNumber Removed", ecNumber.getPhoneNumber().toString());
+                            return;
 
+                        }
                     }
+                    adapter.notifyDataSetChanged();
+                } catch (Exception ex) {
+
                 }
-                adapter.notifyDataSetChanged();
+
 
             }
 

@@ -55,16 +55,17 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initUserInformation();
         startService(new Intent(this, BluetoothService.class));
         sharedpreferences = getSharedPreferences(Constant.IS_TRACKING_RUNNING, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_home);
         initActions();
         initDBRef();
-        initUserInformation();
 
     }
 
     private void initUserInformation() {
+        Constant.USER_REF.child(fUser.getUid()).keepSynced(true);
     }
 
     private void initDBRef() {
