@@ -30,6 +30,8 @@ import com.nsu.protibadi.Utils.Constant;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import static com.nsu.protibadi.Utils.Constant.FCM_TOKEN;
+
 public class HomeActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
@@ -123,6 +125,8 @@ public class HomeActivity extends AppCompatActivity {
         TrackPointKey = new ArrayList<>();
 
         footPrintREF.keepSynced(true);
+        Constant.USER_REF.child(fUser.getUid()).child(FCM_TOKEN).setValue(Constant.getSharedPref(getApplicationContext()).getString(Constant.FCM_TOKEN, ""));
+
         footPrintREF.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

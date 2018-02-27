@@ -29,15 +29,16 @@
 
             <TextView
                 android:id="@+id/name_link_account"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/link_account_profile"
                 android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/delete_linked_account_button"
                 android:layout_toRightOf="@+id/link_account_profile"
                 android:maxLength="25"
                 android:singleLine="true"
                 android:text="md Majedur Rahman"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/contact_info"
@@ -57,7 +58,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/ic_close_red" />
 
         </RelativeLayout>

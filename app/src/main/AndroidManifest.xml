@@ -21,8 +21,11 @@
 
         <activity
             android:name=".Activity.CurrentPositionActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".Activity.HomeActivity" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,17 +33,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.UserDetailsActivity" />
+        <activity
+            android:name=".Activity.UserDetailsActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".Service.BluetoothService" />
 
-        <activity android:name=".Activity.TrackingActivity" />
-        <activity android:name=".Activity.FootPrintHistoryActivity" />
-        <activity android:name=".Activity.FootPrintMapActivity" />
-        <activity android:name=".Activity.AddNewEmergencyNumberActivity" />
-        <activity android:name=".Activity.JoinActivity" />
-        <activity android:name=".Activity.LinkActivity" />
-        <activity android:name=".Activity.ManageLinkedAccountActivity"></activity>
+        <activity
+            android:name=".Activity.TrackingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.FootPrintHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.FootPrintMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AddNewEmergencyNumberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.JoinActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.LinkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ManageLinkedAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.ManageJoinedAccountActivity"></activity>
+
+        <service android:name=".ProtibadiMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".ProtibadiInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

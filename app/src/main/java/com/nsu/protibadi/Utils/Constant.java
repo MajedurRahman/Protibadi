@@ -31,6 +31,7 @@ public class Constant {
     public static final String EMERGENCY_STATUS = "EmergencyStatus";
     public static final String JOINED_WITH = "JoinedWith";
     public static final String LINKED_WITH = "LinkedWith";
+    public static final String FCM_TOKEN = "FirebaseToken";
     public static SharedPreferences sharedpreferences;
     public static String CURRENT_TRACKING_NUMBER = "CurrentTrackingNumber";
     public static String DEVICE_NAME = "HC-05";

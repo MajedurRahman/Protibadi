@@ -116,9 +116,10 @@ public class BluetoothService extends Service {
 
         @Override
         public void onDataReceived(int data) {
-            Log.e("Emergency Data  :", (char) data + " " + Thread.currentThread().getName());
-
-            if (String.valueOf((char) data).equalsIgnoreCase("E") && isTrackingRunning() == 0) {
+            //Log.e("Emergency Data  :", (char) data + " " + Thread.currentThread().getName());
+            Log.e(TAG, "onDataReceived: " + (char) data);
+            Toast.makeText(BluetoothService.this, " " + (char) data, Toast.LENGTH_SHORT).show();
+            if ((String.valueOf((char) data).equalsIgnoreCase("E") || !String.valueOf((char) data).isEmpty()) && isTrackingRunning() == 0) {
                 int trackingFLAG = getSharedPref(context).getInt(Constant.IS_TRACKING_RUNNING, 0);
 
                 if (trackingFLAG == Constant.TRACKING_END) {

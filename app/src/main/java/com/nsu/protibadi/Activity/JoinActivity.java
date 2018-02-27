@@ -37,7 +37,7 @@ public class JoinActivity extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.join_dailog_layout);
 
-        //dialog.setCancelable(false);
+        dialog.setCancelable(false);
         dialog.show();
         editText = dialog.findViewById(R.id.user_link_id_et);
         submitProgressBar = dialog.findViewById(R.id.submit_progress);
@@ -61,7 +61,7 @@ public class JoinActivity extends AppCompatActivity {
                                     model.setJoinWithName(user.getDisplayName());
                                     model.setJoinerId(user.getUid());
                                     Constant.LINK_REF.child(uid).setValue(model);
-                                    Toast.makeText(JoinActivity.this, "Successfully added with" + model.getJoinWithName(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(JoinActivity.this, "Successfully added with" + model.getLinkWithName(), Toast.LENGTH_SHORT).show();
                                     LinkedWith linkedWith = new LinkedWith(model.getLinkWithName(), model.getLinkerId(), System.currentTimeMillis(), "Unknown");
                                     Constant.USER_REF.child(user.getUid()).child(JOINED_WITH).push().setValue(linkedWith);
                                     finish();

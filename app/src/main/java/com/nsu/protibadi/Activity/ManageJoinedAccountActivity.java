@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.nsu.protibadi.Adapter.LinkedAccountAdapter;
+import com.nsu.protibadi.Adapter.JoinedAccountAdapter;
 import com.nsu.protibadi.Model.LinkedWith;
 import com.nsu.protibadi.R;
 import com.nsu.protibadi.Utils.Constant;
@@ -19,25 +19,26 @@ import com.nsu.protibadi.Utils.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nsu.protibadi.Utils.Constant.LINKED_WITH;
+import static com.nsu.protibadi.Utils.Constant.JOINED_WITH;
 
-public class ManageLinkedAccountActivity extends AppCompatActivity {
+public class ManageJoinedAccountActivity extends AppCompatActivity {
     private static final String TAG = ManageLinkedAccountActivity.class.getSimpleName();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     List<LinkedWith> linkJoinModels;
     RecyclerView recyclerView;
-    private LinkedAccountAdapter adapter;
+    private JoinedAccountAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_linked_account);
+
         linkJoinModels = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recycler_view_manage_linked_account);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new LinkedAccountAdapter(this, linkJoinModels);
+        adapter = new JoinedAccountAdapter(this, linkJoinModels);
         recyclerView.setAdapter(adapter);
 
 
@@ -46,7 +47,7 @@ public class ManageLinkedAccountActivity extends AppCompatActivity {
 
     private void manegeAccountList() {
 
-        Constant.USER_REF.child(user.getUid()).child(LINKED_WITH).addChildEventListener(new ChildEventListener() {
+        Constant.USER_REF.child(user.getUid()).child(JOINED_WITH).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
