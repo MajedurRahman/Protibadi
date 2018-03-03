@@ -1,4 +1,4 @@
-package com.nsu.protibadi;
+package com.nsu.protibadi.NotificationService;
 
 import android.util.Log;
 

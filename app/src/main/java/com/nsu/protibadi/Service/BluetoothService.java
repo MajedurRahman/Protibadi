@@ -47,6 +47,7 @@ public class BluetoothService extends Service {
     Location location;
     MediaPlayer mediaPlayer;
     private String userId;
+
     private SmoothBluetooth.Listener mListener = new SmoothBluetooth.Listener() {
         @Override
         public void onBluetoothNotSupported() {
@@ -103,7 +104,6 @@ public class BluetoothService extends Service {
                         if (device.getName().equalsIgnoreCase(Constant.DEVICE_NAME)) {
                             if (!mSmoothBluetooth.isConnected())
                                 connectionCallback.connectTo(device);
-
                         }
                     }
                 }

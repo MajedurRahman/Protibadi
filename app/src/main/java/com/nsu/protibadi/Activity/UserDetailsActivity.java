@@ -66,11 +66,14 @@ public class UserDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             tokenList.add(dataSnapshot.getValue().toString());
-
+                            Log.e(TAG, "onDataChange: " + " Key: " + dataSnapshot.getValue().toString());
                             SimpleNotification simpleNotification = new SimpleNotification();
                             simpleNotification.setTo(dataSnapshot.getValue().toString());
-                            simpleNotification.setData(new Data());
-
+                            Data dataMessage = new Data();
+                            dataMessage.setTitle("This is a Firebase Cloud Messaging Device Group Message nn!");
+                            dataMessage.setCustomData("This is a Firebase Cloud Messaging Device Group Message!");
+                            dataMessage.setMessage("This is a Firebase Cloud Messaging Device Group Message!");
+                            simpleNotification.setData(dataMessage);
                             SendNotification sendNotification = new SendNotification();
                             sendNotification.sendNotificationRequest(simpleNotification);
                         }

@@ -52,7 +52,7 @@
 
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/round_button_bg_logout"
                 android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/add_emergency_contact_number"
@@ -64,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
                 android:elevation="2dp"
                 android:fontFamily="sans-serif-smallcaps"
                 app:cardBackgroundColor="#eeeeee"
